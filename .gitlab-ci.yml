@@ -1,0 +1,12 @@
+variables:
+  GITHUB_TOKEN: $GITHUB_TOKEN
+scan:
+  stage: test
+  image: 
+    name: shiftleft/sast-scan
+  script:
+    - scan --src ${CI_PROJECT_DIR} --out_dir ${CI_PROJECT_DIR}/reports
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME"
+    paths:
+      - $CI_PROJECT_DIR/reports/
