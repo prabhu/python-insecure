@@ -4,9 +4,6 @@ on:
     branches:
       - master
       - feature/*
-  schedule:
-  - cron: "0 */4 * * *"
-
 jobs:
   Scan_build:
     runs-on: ubuntu-latest
