@@ -1,16 +1,13 @@
 name: ShiftLeft Scan
 on:
-  push:
-    branches:
-      - master
-      - feature/*
+  pull_request:
 jobs:
   Scan_build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
     - name: Security scan
-      uses: ShiftLeftSecurity/scan-action@master
+      uses: ShiftLeftSecurity/scan-action@annotate
       with:
         output: reports
         type: credscan,python,depscan
@@ -22,4 +19,3 @@ jobs:
       with:
         name: scan-reports
         path: reports
-
