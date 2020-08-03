@@ -1,25 +1,21 @@
 name: ShiftLeft Scan
 on:
   push:
-    branches:
-      - master
-      - feature/*
+  pull_request:
 jobs:
   Scan_build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
     - name: Security scan
-      uses: ShiftLeftSecurity/scan-action@master
-      with:
-        output: reports
-        type: credscan,python,depscan
+      run: |
+        docker run -v $PWD:/app shiftleft/scan:gh-comments scan -t python -o /app/reports
       env:
         WORKSPACE: https://github.com/${{ github.repository }}/blob/${{ github.sha }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SCAN_ANNOTATE_PR: true
     - name: Upload scan reports
       uses: actions/upload-artifact@v1.0.0
       with:
         name: scan-reports
         path: reports
-
