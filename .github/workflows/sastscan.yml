@@ -1,6 +1,7 @@
 name: ShiftLeft Scan
 on:
   pull_request:
+    
 jobs:
   Scan_build:
     runs-on: ubuntu-latest
