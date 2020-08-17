@@ -1,22 +1,18 @@
 name: ShiftLeft Scan
 on:
-  push:
-    branches:
-      - master
-      - feature/*
+  push:    
 jobs:
   Scan_build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
     - name: Security scan
-      uses: ShiftLeftSecurity/scan-action@master
-      with:
-        output: reports
-        type: credscan,python,depscan
+      run: |
+        docker run -e WORKSPACE -e GITHUB_RUN_ID -e GITHUB_REPOSITORY -e GITHUB_EVENT_NAME -e GITHUB_WORKSPACE -e GITHUB_TOKEN -e SCAN_ANNOTATE_PR -e SCAN_DEBUG_MODE=debug -v $PWD:/app shiftleft/scan-slim:pyt scan -t python -o /app/reports --no-error
       env:
         WORKSPACE: https://github.com/${{ github.repository }}/blob/${{ github.sha }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SCAN_ANNOTATE_PR: true
     - name: Upload scan reports
       uses: actions/upload-artifact@v1.0.0
       with:
